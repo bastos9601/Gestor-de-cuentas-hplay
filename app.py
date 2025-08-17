@@ -6,7 +6,7 @@ import os
 from datetime import datetime, timedelta
 import threading
 import time
-import pywhatkit as pwk
+# PyWhatKit se importará solo cuando sea necesario
 
 # Importar configuración personalizada
 try:
@@ -124,6 +124,14 @@ def enviar_whatsapp(telefono, mensaje):
             print("🔍 DEBUG: Detectado entorno de servidor - WhatsApp simulado")
             # En servidor, solo simular el envío
             return True
+        
+        # Solo importar PyWhatKit si no estamos en servidor
+        try:
+            import pywhatkit as pwk
+            print("🔍 DEBUG: PyWhatKit importado exitosamente")
+        except Exception as e:
+            print(f"❌ ERROR importando PyWhatKit: {e}")
+            return False
         
         # Limpiar y formatear número de teléfono
         telefono_limpio = str(telefono).strip()
