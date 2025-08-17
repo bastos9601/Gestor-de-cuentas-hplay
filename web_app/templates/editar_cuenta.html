@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block title %}HPLAY - Editar Cuenta{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">
+                        <i class="fas fa-edit me-2 text-warning"></i>Editar Cuenta
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" class="needs-validation" novalidate>
+                        <div class="row">
+                            <!-- Servicio -->
+                            <div class="col-md-6 mb-3">
+                                <label for="servicio" class="form-label">
+                                    <i class="fas fa-film me-1"></i>Servicio *
+                                </label>
+                                <input type="text" class="form-control" id="servicio" name="servicio" 
+                                       value="{{ cuenta.servicio }}" required placeholder="Netflix, Disney+, etc.">
+                                <div class="invalid-feedback">
+                                    Por favor ingresa el servicio.
+                                </div>
+                            </div>
+
+                            <!-- Cliente -->
+                            <div class="col-md-6 mb-3">
+                                <label for="cliente" class="form-label">
+                                    <i class="fas fa-user me-1"></i>Cliente *
+                                </label>
+                                <input type="text" class="form-control" id="cliente" name="cliente" 
+                                       value="{{ cuenta.cliente }}" required placeholder="Nombre del cliente">
+                                <div class="invalid-feedback">
+                                    Por favor ingresa el cliente.
+                                </div>
+                            </div>
+
+                            <!-- Número de Cliente -->
+                            <div class="col-md-6 mb-3">
+                                <label for="num_cliente" class="form-label">
+                                    <i class="fas fa-hashtag me-1"></i>N° Cliente
+                                </label>
+                                <input type="text" class="form-control" id="num_cliente" name="num_cliente" 
+                                       value="{{ cuenta.num_cliente or '' }}" placeholder="Número de cliente">
+                            </div>
+
+                            <!-- Método de Pago -->
+                            <div class="col-md-6 mb-3">
+                                <label for="metodo" class="form-label">
+                                    <i class="fas fa-credit-card me-1"></i>Método de Pago
+                                </label>
+                                <select class="form-select" id="metodo" name="metodo">
+                                    <option value="">Selecciona método</option>
+                                    <option value="Efectivo" {% if cuenta.metodo == 'Efectivo' %}selected{% endif %}>Efectivo</option>
+                                    <option value="Transferencia" {% if cuenta.metodo == 'Transferencia' %}selected{% endif %}>Transferencia</option>
+                                    <option value="Yape" {% if cuenta.metodo == 'Yape' %}selected{% endif %}>Yape</option>
+                                    <option value="Plin" {% if cuenta.metodo == 'Plin' %}selected{% endif %}>Plin</option>
+                                    <option value="Tarjeta" {% if cuenta.metodo == 'Tarjeta' %}selected{% endif %}>Tarjeta</option>
+                                    <option value="Otro" {% if cuenta.metodo == 'Otro' %}selected{% endif %}>Otro</option>
+                                </select>
+                            </div>
+
+                            <!-- Precio -->
+                            <div class="col-md-6 mb-3">
+                                <label for="precio" class="form-label">
+                                    <i class="fas fa-dollar-sign me-1"></i>Precio
+                                </label>
+                                <input type="text" class="form-control" id="precio" name="precio" 
+                                       value="{{ cuenta.precio or '' }}" placeholder="S/. 0.00">
+                            </div>
+
+                            <!-- Teléfono -->
+                            <div class="col-md-6 mb-3">
+                                <label for="telefono" class="form-label">
+                                    <i class="fas fa-phone me-1"></i>Teléfono
+                                </label>
+                                <input type="tel" class="form-control" id="telefono" name="telefono" 
+                                       value="{{ cuenta.telefono or '' }}" placeholder="+51 999 999 999">
+                            </div>
+
+                            <!-- Fecha de Inicio -->
+                            <div class="col-md-6 mb-3">
+                                <label for="fecha_inicio" class="form-label">
+                                    <i class="fas fa-calendar-plus me-1"></i>Fecha de Inicio
+                                </label>
+                                <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" 
+                                       value="{{ cuenta.fecha_inicio or '' }}">
+                            </div>
+
+                            <!-- Fecha de Fin -->
+                            <div class="col-md-6 mb-3">
+                                <label for="fecha_fin" class="form-label">
+                                    <i class="fas fa-calendar-minus me-1"></i>Fecha de Fin
+                                </label>
+                                <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" 
+                                       value="{{ cuenta.fecha_fin or '' }}">
+                            </div>
+
+                            <!-- Usuario -->
+                            <div class="col-md-6 mb-3">
+                                <label for="usuario" class="form-label">
+                                    <i class="fas fa-user-circle me-1"></i>Usuario *
+                                </label>
+                                <input type="text" class="form-control" id="usuario" name="usuario" 
+                                       value="{{ cuenta.usuario }}" required placeholder="Usuario de la cuenta">
+                                <div class="invalid-feedback">
+                                    Por favor ingresa el usuario.
+                                </div>
+                            </div>
+
+                            <!-- Contraseña -->
+                            <div class="col-md-6 mb-3">
+                                <label for="password" class="form-label">
+                                    <i class="fas fa-lock me-1"></i>Contraseña *
+                                </label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password" name="password" 
+                                           value="{{ cuenta.password }}" required placeholder="Contraseña de la cuenta">
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa la contraseña.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información adicional -->
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <strong>Información:</strong> Esta cuenta fue creada el {{ cuenta.fecha_creacion.strftime('%d/%m/%Y %H:%M') if cuenta.fecha_creacion else 'Fecha no disponible' }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="row mt-4">
+                            <div class="col-12 d-flex justify-content-between">
+                                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary btn-hplay">
+                                    <i class="fas fa-arrow-left me-1"></i>Volver
+                                </a>
+                                <button type="submit" class="btn btn-warning btn-hplay">
+                                    <i class="fas fa-save me-1"></i>Actualizar Cuenta
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control, .form-select {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: var(--hplay-accent);
+        box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+    }
+    
+    .btn-hplay {
+        min-width: 120px;
+    }
+    
+    .alert-info {
+        background: linear-gradient(45deg, var(--hplay-accent), #87CEEB);
+        border: none;
+        color: white;
+    }
+    
+    @media (max-width: 768px) {
+        .btn-hplay {
+            width: 100%;
+            margin: 5px 0;
+        }
+        
+        .d-flex.justify-content-between {
+            flex-direction: column;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Validación del formulario
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+
+// Toggle de contraseña
+document.getElementById('togglePassword').addEventListener('click', function() {
+    const password = document.getElementById('password');
+    const icon = this.querySelector('i');
+    
+    if (password.type === 'password') {
+        password.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        password.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+});
+
+// Auto-completar fecha de fin (30 días después de inicio)
+document.getElementById('fecha_inicio').addEventListener('change', function() {
+    const fechaInicio = new Date(this.value);
+    const fechaFin = new Date(fechaInicio);
+    fechaFin.setDate(fechaFin.getDate() + 30);
+    
+    const fechaFinInput = document.getElementById('fecha_fin');
+    fechaFinInput.value = fechaFin.toISOString().split('T')[0];
+});
+</script>
+{% endblock %}

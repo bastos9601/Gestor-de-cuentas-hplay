@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+
+{% block title %}HPLAY - Cambiar Clave{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4 class="mb-0">
+                        <i class="fas fa-key me-2 text-warning"></i>Cambiar Contraseña
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" class="needs-validation" novalidate>
+                        <!-- Clave Actual -->
+                        <div class="mb-3">
+                            <label for="clave_actual" class="form-label">
+                                <i class="fas fa-lock me-1"></i>Contraseña Actual *
+                            </label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="clave_actual" 
+                                       name="clave_actual" required placeholder="Ingresa tu contraseña actual">
+                                <button class="btn btn-outline-secondary" type="button" id="toggleClaveActual">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback">
+                                Por favor ingresa tu contraseña actual.
+                            </div>
+                        </div>
+
+                        <!-- Nueva Clave -->
+                        <div class="mb-3">
+                            <label for="nueva_clave" class="form-label">
+                                <i class="fas fa-key me-1"></i>Nueva Contraseña *
+                            </label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="nueva_clave" 
+                                       name="nueva_clave" required placeholder="Ingresa la nueva contraseña">
+                                <button class="btn btn-outline-secondary" type="button" id="toggleNuevaClave">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback">
+                                Por favor ingresa la nueva contraseña.
+                            </div>
+                        </div>
+
+                        <!-- Confirmar Nueva Clave -->
+                        <div class="mb-4">
+                            <label for="confirmar_clave" class="form-label">
+                                <i class="fas fa-check-circle me-1"></i>Confirmar Nueva Contraseña *
+                            </label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="confirmar_clave" 
+                                       name="confirmar_clave" required placeholder="Confirma la nueva contraseña">
+                                <button class="btn btn-outline-secondary" type="button" id="toggleConfirmarClave">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback">
+                                Por favor confirma la nueva contraseña.
+                            </div>
+                        </div>
+
+                        <!-- Indicador de Fortaleza de Contraseña -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-shield-alt me-1"></i>Fortaleza de la Contraseña
+                            </label>
+                            <div class="progress mb-2" style="height: 8px;">
+                                <div class="progress-bar" id="passwordStrength" role="progressbar" 
+                                     style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <small class="text-muted" id="passwordStrengthText">
+                                Ingresa una contraseña para ver su fortaleza
+                            </small>
+                        </div>
+
+                        <!-- Requisitos de Contraseña -->
+                        <div class="mb-4">
+                            <div class="alert alert-info">
+                                <h6 class="alert-heading">
+                                    <i class="fas fa-info-circle me-1"></i>Requisitos de Contraseña:
+                                </h6>
+                                <ul class="mb-0 small">
+                                    <li id="reqLength">Al menos 8 caracteres</li>
+                                    <li id="reqUppercase">Al menos una mayúscula</li>
+                                    <li id="reqLowercase">Al menos una minúscula</li>
+                                    <li id="reqNumber">Al menos un número</li>
+                                    <li id="reqSpecial">Al menos un carácter especial</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Botones -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-warning btn-hplay">
+                                <i class="fas fa-save me-1"></i>Cambiar Contraseña
+                            </button>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary btn-hplay">
+                                <i class="fas fa-arrow-left me-1"></i>Volver al Dashboard
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .form-control {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: var(--hplay-accent);
+        box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+    }
+    
+    .progress-bar {
+        transition: all 0.3s ease;
+    }
+    
+    .alert-info {
+        background: linear-gradient(45deg, var(--hplay-accent), #87CEEB);
+        border: none;
+        color: white;
+    }
+    
+    .requirement-met {
+        color: var(--hplay-success) !important;
+    }
+    
+    .requirement-not-met {
+        color: #dc3545 !important;
+    }
+    
+    @media (max-width: 768px) {
+        .btn-hplay {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Validación del formulario
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                
+                // Verificar que las contraseñas coincidan
+                const nuevaClave = document.getElementById('nueva_clave').value;
+                const confirmarClave = document.getElementById('confirmar_clave').value;
+                
+                if (nuevaClave !== confirmarClave) {
+                    event.preventDefault();
+                    alert('Las contraseñas no coinciden');
+                    return;
+                }
+                
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+
+// Toggle de contraseñas
+function setupPasswordToggle(inputId, buttonId) {
+    const input = document.getElementById(inputId);
+    const button = document.getElementById(buttonId);
+    
+    button.addEventListener('click', function() {
+        const icon = this.querySelector('i');
+        
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    });
+}
+
+setupPasswordToggle('clave_actual', 'toggleClaveActual');
+setupPasswordToggle('nueva_clave', 'toggleNuevaClave');
+setupPasswordToggle('confirmar_clave', 'toggleConfirmarClave');
+
+// Verificación de fortaleza de contraseña
+document.getElementById('nueva_clave').addEventListener('input', function() {
+    const password = this.value;
+    const strength = calculatePasswordStrength(password);
+    updatePasswordStrengthIndicator(strength);
+    updatePasswordRequirements(password);
+});
+
+function calculatePasswordStrength(password) {
+    let score = 0;
+    
+    if (password.length >= 8) score += 20;
+    if (password.length >= 12) score += 10;
+    if (/[A-Z]/.test(password)) score += 20;
+    if (/[a-z]/.test(password)) score += 20;
+    if (/[0-9]/.test(password)) score += 20;
+    if (/[^A-Za-z0-9]/.test(password)) score += 10;
+    
+    return Math.min(score, 100);
+}
+
+function updatePasswordStrengthIndicator(strength) {
+    const progressBar = document.getElementById('passwordStrength');
+    const strengthText = document.getElementById('passwordStrengthText');
+    
+    progressBar.style.width = strength + '%';
+    progressBar.setAttribute('aria-valuenow', strength);
+    
+    if (strength < 30) {
+        progressBar.className = 'progress-bar bg-danger';
+        strengthText.textContent = 'Muy débil';
+    } else if (strength < 60) {
+        progressBar.className = 'progress-bar bg-warning';
+        strengthText.textContent = 'Débil';
+    } else if (strength < 80) {
+        progressBar.className = 'progress-bar bg-info';
+        strengthText.textContent = 'Media';
+    } else {
+        progressBar.className = 'progress-bar bg-success';
+        strengthText.textContent = 'Fuerte';
+    }
+}
+
+function updatePasswordRequirements(password) {
+    const requirements = {
+        reqLength: password.length >= 8,
+        reqUppercase: /[A-Z]/.test(password),
+        reqLowercase: /[a-z]/.test(password),
+        reqNumber: /[0-9]/.test(password),
+        reqSpecial: /[^A-Za-z0-9]/.test(password)
+    };
+    
+    Object.keys(requirements).forEach(reqId => {
+        const element = document.getElementById(reqId);
+        if (requirements[reqId]) {
+            element.classList.add('requirement-met');
+            element.classList.remove('requirement-not-met');
+        } else {
+            element.classList.add('requirement-not-met');
+            element.classList.remove('requirement-met');
+        }
+    });
+}
+</script>
+{% endblock %}

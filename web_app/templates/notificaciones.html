@@ -1,0 +1,326 @@
+{% extends "base.html" %}
+
+{% block title %}HPLAY - Notificaciones{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h1 class="display-6 fw-bold text-primary mb-2">
+                        <i class="fas fa-bell me-3"></i>HISTORIAL DE NOTIFICACIONES
+                    </h1>
+                    <p class="text-muted mb-0">Registro de todas las acciones del sistema</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="filtroTipo" class="form-label">
+                                <i class="fas fa-filter me-1"></i>Filtrar por Tipo
+                            </label>
+                            <select class="form-select" id="filtroTipo">
+                                <option value="">Todos los tipos</option>
+                                <option value="WhatsApp Enviado">WhatsApp Enviado</option>
+                                <option value="WhatsApp Error">WhatsApp Error</option>
+                                <option value="Verificación de Vencimientos">Verificación de Vencimientos</option>
+                                <option value="Sistema">Sistema</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="filtroEstado" class="form-label">
+                                <i class="fas fa-check-circle me-1"></i>Filtrar por Estado
+                            </label>
+                            <select class="form-select" id="filtroEstado">
+                                <option value="">Todos los estados</option>
+                                <option value="Exitoso">Exitoso</option>
+                                <option value="Fallido">Fallido</option>
+                                <option value="Completada">Completada</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="filtroFecha" class="form-label">
+                                <i class="fas fa-calendar me-1"></i>Filtrar por Fecha
+                            </label>
+                            <input type="date" class="form-control" id="filtroFecha">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <button class="btn btn-primary btn-hplay" onclick="aplicarFiltros()">
+                                <i class="fas fa-search me-1"></i>Aplicar Filtros
+                            </button>
+                            <button class="btn btn-secondary btn-hplay ms-2" onclick="limpiarFiltros()">
+                                <i class="fas fa-times me-1"></i>Limpiar Filtros
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Notificaciones -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="fas fa-list me-2"></i>Notificaciones
+                        <span class="badge bg-primary ms-2" id="totalNotificaciones">
+                            {{ notificaciones|length }}
+                        </span>
+                    </h5>
+                    <div>
+                        <button class="btn btn-success btn-sm btn-hplay me-2" onclick="exportarNotificaciones()">
+                            <i class="fas fa-download me-1"></i>Exportar
+                        </button>
+                        <button class="btn btn-danger btn-sm btn-hplay" onclick="limpiarNotificaciones()">
+                            <i class="fas fa-trash me-1"></i>Limpiar Todo
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0" id="notificacionesTable">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Servicio</th>
+                                    <th>Cliente</th>
+                                    <th>Tipo</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for notif in notificaciones %}
+                                <tr>
+                                    <td>
+                                        <small class="text-muted">
+                                            {{ notif.fecha.strftime('%d/%m/%Y %H:%M') }}
+                                        </small>
+                                    </td>
+                                    <td>
+                                        <strong>{{ notif.servicio }}</strong>
+                                    </td>
+                                    <td>{{ notif.cliente }}</td>
+                                    <td>
+                                        {% if notif.tipo == 'WhatsApp Enviado' %}
+                                            <span class="badge bg-success">
+                                                <i class="fab fa-whatsapp me-1"></i>{{ notif.tipo }}
+                                            </span>
+                                        {% elif notif.tipo == 'WhatsApp Error' %}
+                                            <span class="badge bg-danger">
+                                                <i class="fas fa-exclamation-triangle me-1"></i>{{ notif.tipo }}
+                                            </span>
+                                        {% elif notif.tipo == 'Verificación de Vencimientos' %}
+                                            <span class="badge bg-info">
+                                                <i class="fas fa-calendar-check me-1"></i>{{ notif.tipo }}
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">
+                                                <i class="fas fa-cog me-1"></i>{{ notif.tipo }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if notif.estado == 'Exitoso' %}
+                                            <span class="badge bg-success">
+                                                <i class="fas fa-check me-1"></i>{{ notif.estado }}
+                                            </span>
+                                        {% elif notif.estado == 'Fallido' %}
+                                            <span class="badge bg-danger">
+                                                <i class="fas fa-times me-1"></i>{{ notif.estado }}
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-info">
+                                                <i class="fas fa-info-circle me-1"></i>{{ notif.estado }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button class="btn btn-info btn-sm" onclick="verDetalles({{ notif.id }})">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-warning btn-sm" onclick="reenviarNotificacion({{ notif.id }})">
+                                                <i class="fas fa-paper-plane"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-4">
+                                        <i class="fas fa-bell-slash fa-3x mb-3"></i>
+                                        <p class="mb-0">No hay notificaciones registradas</p>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Detalles -->
+<div class="modal fade" id="detallesModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detalles de la Notificación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="detallesModalBody">
+                <!-- Contenido dinámico -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .badge {
+        font-size: 0.8rem;
+        padding: 0.5em 0.8em;
+    }
+    
+    .btn-group-sm .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+    
+    .table th {
+        background: var(--hplay-secondary);
+        color: white;
+        border: none;
+        font-weight: 600;
+    }
+    
+    .table td {
+        vertical-align: middle;
+    }
+    
+    @media (max-width: 768px) {
+        .table-responsive {
+            font-size: 0.8rem;
+        }
+        
+        .btn-hplay {
+            width: 100%;
+            margin: 5px 0;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Filtros
+function aplicarFiltros() {
+    const tipo = document.getElementById('filtroTipo').value;
+    const estado = document.getElementById('filtroEstado').value;
+    const fecha = document.getElementById('filtroFecha').value;
+    
+    const rows = document.querySelectorAll('#notificacionesTable tbody tr');
+    let visibleCount = 0;
+    
+    rows.forEach(row => {
+        let mostrar = true;
+        
+        // Filtrar por tipo
+        if (tipo && !row.cells[3].textContent.includes(tipo)) {
+            mostrar = false;
+        }
+        
+        // Filtrar por estado
+        if (estado && !row.cells[4].textContent.includes(estado)) {
+            mostrar = false;
+        }
+        
+        // Filtrar por fecha
+        if (fecha) {
+            const fechaNotif = row.cells[0].textContent.trim();
+            if (!fechaNotif.includes(fecha.split('-').reverse().join('/'))) {
+                mostrar = false;
+            }
+        }
+        
+        row.style.display = mostrar ? '' : 'none';
+        if (mostrar) visibleCount++;
+    });
+    
+    document.getElementById('totalNotificaciones').textContent = visibleCount;
+}
+
+function limpiarFiltros() {
+    document.getElementById('filtroTipo').value = '';
+    document.getElementById('filtroEstado').value = '';
+    document.getElementById('filtroFecha').value = '';
+    
+    const rows = document.querySelectorAll('#notificacionesTable tbody tr');
+    rows.forEach(row => {
+        row.style.display = '';
+    });
+    
+    document.getElementById('totalNotificaciones').textContent = rows.length;
+}
+
+// Ver detalles de notificación
+function verDetalles(notifId) {
+    // Aquí podrías hacer una llamada AJAX para obtener más detalles
+    const modal = new bootstrap.Modal(document.getElementById('detallesModal'));
+    const modalBody = document.getElementById('detallesModalBody');
+    
+    modalBody.innerHTML = `
+        <div class="text-center">
+            <i class="fas fa-info-circle fa-3x text-info mb-3"></i>
+            <h6>Detalles de la Notificación</h6>
+            <p>ID: ${notifId}</p>
+            <p>Esta funcionalidad mostrará información detallada de la notificación seleccionada.</p>
+        </div>
+    `;
+    
+    modal.show();
+}
+
+// Reenviar notificación
+function reenviarNotificacion(notifId) {
+    if (confirm('¿Estás seguro de que quieres reenviar esta notificación?')) {
+        alert(`Reenviando notificación ID: ${notifId}\n\nEsta funcionalidad reenviará la notificación al cliente.`);
+    }
+}
+
+// Exportar notificaciones
+function exportarNotificaciones() {
+    alert('Exportando notificaciones...\n\nEsta funcionalidad exportará el historial en formato CSV/Excel.');
+}
+
+// Limpiar todas las notificaciones
+function limpiarNotificaciones() {
+    if (confirm('¿Estás seguro de que quieres eliminar TODAS las notificaciones?\n\nEsta acción no se puede deshacer.')) {
+        alert('Limpiando todas las notificaciones...\n\nEsta funcionalidad eliminará todo el historial.');
+    }
+}
+
+// Aplicar filtros automáticamente
+document.getElementById('filtroTipo').addEventListener('change', aplicarFiltros);
+document.getElementById('filtroEstado').addEventListener('change', aplicarFiltros);
+document.getElementById('filtroFecha').addEventListener('change', aplicarFiltros);
+</script>
+{% endblock %}
