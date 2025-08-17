@@ -1,11 +1,8 @@
 [phases.setup]
-nixPkgs = ["python311", "gcc", "bash"]
+nixPkgs = ["python311", "gcc"]
 
 [phases.install]
 cmds = ["pip install -r requirements.txt"]
 
-[phases.build]
-cmds = ["chmod +x railway-start.sh"]
-
 [start]
-cmd = "./railway-start.sh"
+cmd = "gunicorn app:app --bind 0.0.0.0:$PORT"
