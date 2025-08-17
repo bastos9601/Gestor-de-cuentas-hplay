@@ -6,10 +6,9 @@ services:
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
-      pip install gunicorn==21.2.0
     startCommand: |
-      python -c "import gunicorn; print('Gunicorn disponible')"
-      gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120
+      cd web_app
+      gunicorn app:app --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
