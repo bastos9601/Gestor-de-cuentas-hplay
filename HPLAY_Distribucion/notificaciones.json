@@ -1,0 +1,121 @@
+[
+  {
+    "fecha": "17/08/2025 10:57",
+    "servicio": "disney +",
+    "cliente": "selene",
+    "mensaje": "📱 Hola selene, te recordamos que tu cuenta de disney + está activa. Si necesitas renovar o tienes alguna consulta, no dudes en contactarnos.",
+    "estado": "Manual"
+  },
+  {
+    "fecha": "17/08/2025 10:59",
+    "servicio": "disney +",
+    "cliente": "selene",
+    "mensaje": "📱 Hola selene, te recordamos que tu cuenta de disney + está activa. Si necesitas renovar o tienes alguna consulta, no dudes en contactarnos.",
+    "estado": "Manual"
+  },
+  {
+    "fecha": "17/08/2025 11:00",
+    "servicio": "disney +",
+    "cliente": "selene",
+    "mensaje": "📱 Hola selene, te recordamos que tu cuenta de disney + está activa. Si necesitas renovar o tienes alguna consulta, no dudes en contactarnos.",
+    "estado": "Manual"
+  },
+  {
+    "fecha": "17/08/2025 11:01",
+    "servicio": "disney +",
+    "cliente": "selene",
+    "mensaje": "📱 Hola selene, te recordamos que tu cuenta de disney + está activa. Si necesitas renovar o tienes alguna consulta, no dudes en contactarnos.",
+    "estado": "Manual"
+  },
+  {
+    "fecha": "17/08/2025 11:04",
+    "servicio": "disney +",
+    "cliente": "selene",
+    "mensaje": "📱 Hola selene, te recordamos que tu cuenta de disney + está activa. Si necesitas renovar o tienes alguna consulta, no dudes en contactarnos.",
+    "estado": "Manual"
+  },
+  {
+    "fecha": "17/08/2025 11:06",
+    "servicio": "netflix",
+    "cliente": "soraya",
+    "mensaje": "📱 Hola soraya, te recordamos que tu cuenta de netflix está activa. Si necesitas renovar o tienes alguna consulta, no dudes en contactarnos.",
+    "estado": "Manual"
+  },
+  {
+    "fecha": "17/08/2025 11:06",
+    "servicio": "netflix",
+    "cliente": "soraya",
+    "mensaje": "📱 Hola soraya, te recordamos que tu cuenta de netflix está activa. Si necesitas renovar o tienes alguna consulta, no dudes en contactarnos.",
+    "estado": "Manual"
+  },
+  {
+    "fecha": "17/08/2025 11:11",
+    "servicio": "netflix",
+    "cliente": "soraya",
+    "mensaje": "📱 Hola soraya, te recordamos que tu cuenta de netflix está activa. Si necesitas renovar o tienes alguna consulta, no dudes en contactarnos.",
+    "estado": "Manual"
+  },
+  {
+    "fecha": "17/08/2025 11:16",
+    "servicio": "disney +",
+    "cliente": "alberto",
+    "mensaje": "📱 Hola alberto, te recordamos que tu cuenta de disney + está activa. Si necesitas renovar o tienes alguna consulta, no dudes en contactarnos.",
+    "estado": "Manual"
+  },
+  {
+    "fecha": "17/08/2025 11:26",
+    "servicio": "vix ",
+    "cliente": "hugo",
+    "mensaje": "Confirmación de cuenta nueva",
+    "estado": "Enviado"
+  },
+  {
+    "fecha": "17/08/2025 11:38",
+    "servicio": "disney",
+    "cliente": "alfredo",
+    "mensaje": "Confirmación de cuenta nueva",
+    "estado": "Enviado"
+  },
+  {
+    "fecha": "17/08/2025 11:41",
+    "servicio": "netflix",
+    "cliente": "alfredo",
+    "mensaje": "Confirmación de cuenta nueva",
+    "estado": "Enviado"
+  },
+  {
+    "fecha": "17/08/2025 11:42",
+    "servicio": "netflix",
+    "cliente": "alfredo",
+    "mensaje": "Actualización de cuenta",
+    "estado": "Enviado"
+  },
+  {
+    "fecha": "17/08/2025 11:46",
+    "servicio": "netflix",
+    "cliente": "alfredo",
+    "mensaje": "📱 Hola alfredo, te recordamos que tu cuenta de netflix está activa. Si necesitas renovar o tienes alguna consulta, no dudes en contactarnos.",
+    "estado": "Manual"
+  },
+  {
+    "fecha": "17/08/2025 11:53",
+    "servicio": "netflix",
+    "cliente": "alfredo",
+    "mensaje": "Actualización de cuenta",
+    "estado": "Enviado"
+  },
+  {
+    "fecha": "17/08/2025 13:10",
+    "servicio": "netflix",
+    "cliente": "alfredo",
+    "mensaje": "Información de cuenta reenviada",
+    "estado": "Enviado"
+  },
+  {
+    "fecha": "17/08/2025 13:41",
+    "servicio": "disney +",
+    "cliente": "Alfredo",
+    "mensaje": "Confirmación de cuenta nueva",
+    "estado": "Enviado"
+  }
+]

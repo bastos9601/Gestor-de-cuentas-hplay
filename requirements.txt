@@ -1,0 +1,2 @@
+pywhatkit==5.4
+cryptography==41.0.7 
