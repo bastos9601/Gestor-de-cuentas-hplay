@@ -717,14 +717,6 @@ def cancelar_whatsapp_programado(notif_id):
         return jsonify({'error': f'Error cancelando WhatsApp: {str(e)}'})
 
 if __name__ == '__main__':
-    # Iniciar verificación automática de vencimientos
-    def verificar_automaticamente():
-        while True:
-            verificar_vencimientos()
-            time.sleep(3600)  # Verificar cada hora
-    
-    thread_auto = threading.Thread(target=verificar_automaticamente, daemon=True)
-    thread_auto.start()
-    
-    # Para Vercel, usar configuración por defecto
+    # Para Vercel, no ejecutar threads automáticos
+    # ya que no funcionan en entorno serverless
     app.run(debug=False)

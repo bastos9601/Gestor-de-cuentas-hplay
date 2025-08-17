@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+*.log
+instance/
+*.db
+*.sqlite
+*.sqlite3
+.git/
+.gitignore
+README_VERCEL.md
