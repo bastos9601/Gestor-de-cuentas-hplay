@@ -2,8 +2,15 @@ services:
   - type: web
     name: hplay-gestor
     env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
+    plan: free
+    buildCommand: |
+      chmod +x build.sh
+      ./build.sh
+    startCommand: |
+      chmod +x start.sh
+      ./start.sh
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
+      - key: FLASK_ENV
+        value: production
