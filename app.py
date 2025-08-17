@@ -10,27 +10,35 @@ import pywhatkit as pwk
 
 # Importar configuración personalizada
 try:
-    from web_app.config import WHATSAPP_CONFIG, APP_CONFIG, MENSAJES
+    # Primero intentar importar configuración de Render
+    from render_config import WHATSAPP_CONFIG, APP_CONFIG, MENSAJES
+    print("🔍 DEBUG: Usando configuración de Render")
 except ImportError:
-    # Configuración por defecto si no existe el archivo
-    WHATSAPP_CONFIG = {
-        'numero_soporte': '+51 999 999 999',
-        'tiempo_espera': 15,
-        'cerrar_tab': True,
-        'tiempo_cierre': 30
-    }
-    APP_CONFIG = {
-        'nombre': 'HPLAY - Gestor de Cuentas',
-        'version': '2.0'
-    }
-    MENSAJES = {
-        'nueva_cuenta': {
-            'titulo': '🎬 HPLAY - Nueva Cuenta Activada 🎬',
-            'saludo': '¡Hola {cliente}! Tu cuenta ha sido activada exitosamente.',
-            'despedida': 'Saludos, Equipo HPLAY 🎬',
-            'soporte': '📱 Para soporte: {numero_soporte}'
+    try:
+        # Si no existe, intentar configuración local
+        from web_app.config import WHATSAPP_CONFIG, APP_CONFIG, MENSAJES
+        print("🔍 DEBUG: Usando configuración local")
+    except ImportError:
+        # Configuración por defecto si no existe ningún archivo
+        print("🔍 DEBUG: Usando configuración por defecto")
+        WHATSAPP_CONFIG = {
+            'numero_soporte': '+51 999 999 999',
+            'tiempo_espera': 15,
+            'cerrar_tab': True,
+            'tiempo_cierre': 30
         }
-    }
+        APP_CONFIG = {
+            'nombre': 'HPLAY - Gestor de Cuentas',
+            'version': '2.0'
+        }
+        MENSAJES = {
+            'nueva_cuenta': {
+                'titulo': '🎬 HPLAY - Nueva Cuenta Activada 🎬',
+                'saludo': '¡Hola {cliente}! Tu cuenta ha sido activada exitosamente.',
+                'despedida': 'Saludos, Equipo HPLAY 🎬',
+                'soporte': '📱 Para soporte: {numero_soporte}'
+            }
+        }
 
 app = Flask(__name__, 
             template_folder='web_app/templates',
@@ -110,6 +118,13 @@ def enviar_whatsapp(telefono, mensaje):
     print(f"   - Mensaje: {mensaje[:100]}...")
     
     try:
+        # Verificar si estamos en un entorno de servidor (Render)
+        import os
+        if 'RENDER' in os.environ or 'DISPLAY' not in os.environ:
+            print("🔍 DEBUG: Detectado entorno de servidor - WhatsApp simulado")
+            # En servidor, solo simular el envío
+            return True
+        
         # Limpiar y formatear número de teléfono
         telefono_limpio = str(telefono).strip()
         print(f"🔍 DEBUG: Teléfono limpio: {telefono_limpio}")
