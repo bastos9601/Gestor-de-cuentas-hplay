@@ -4,11 +4,12 @@ services:
     env: python
     plan: free
     buildCommand: |
-      chmod +x build.sh
-      ./build.sh
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      pip install gunicorn==21.2.0
     startCommand: |
-      chmod +x start.sh
-      ./start.sh
+      python -c "import gunicorn; print('Gunicorn disponible')"
+      gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
